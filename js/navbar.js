@@ -1,9 +1,10 @@
 import { displayAllData } from "./table.js"
-import { nav, offset, setOffset, totalOffset } from "./globals.js"
+import { offset, setOffset, totalOffset } from "./globals.js"
 
 const isMob = matchMedia("(max-width: 768px)")
 const arrowLeft = document.createElement("div")
 const arrowRight = document.createElement("div")
+export const nav = document.createElement("nav")
 
 const pageButtons = () => {
   while (nav.firstChild) {
@@ -95,8 +96,6 @@ const pageButtons = () => {
         break;
     }
   }
-  nav.appendChild(arrowRight)
-
   const pageBtns = document.querySelectorAll(".page")
   pageBtns.forEach(ele => {
     if (parseInt(ele.innerHTML) === page) {
@@ -111,33 +110,10 @@ const pageButtons = () => {
       pageButtons()
     })
   })
+  nav.appendChild(arrowRight)
 }
 
-isMob.addListener(pageButtons)
-
-const navArrowsCheck = () => {
-  const leftArrow = document.querySelector(".arrow-left")
-  const rightArrow = document.querySelector(".arrow-right")
-
-  if (offset === 0) {
-    leftArrow.classList.add("inactive")
-  } else {
-    leftArrow.classList.remove("inactive")
-  }
-
-  if (offset === totalOffset) {
-    rightArrow.classList.add("inactive")
-  } else {
-    rightArrow.classList.remove("inactive")
-  }
-}
-
-export const navBar = () => {
-  arrowLeft.classList.add("arrow-left")
-  arrowRight.classList.add("arrow-right")
-
-  pageButtons()
-
+export const setNavListeners = () => {
   arrowLeft.addEventListener("click", () => {
     if (offset > 0) {
       let newOffset = offset - 10
@@ -157,5 +133,31 @@ export const navBar = () => {
       pageButtons()
     }
   })
+}
+
+isMob.addListener(pageButtons)
+
+const navArrowsCheck = () => {
+  if (offset === 0) {
+    arrowLeft.classList.add("inactive")
+  } else {
+    arrowLeft.classList.remove("inactive")
+  }
+
+  if (offset === totalOffset) {
+    arrowRight.classList.add("inactive")
+  } else {
+    arrowRight.classList.remove("inactive")
+  }
+}
+
+export const navBar = () => {
+  const container = document.querySelector(".char-table")
+  container.appendChild(nav)
+
+  arrowLeft.classList.add("arrow-left")
+  arrowRight.classList.add("arrow-right")
+
+  pageButtons()
   navArrowsCheck()
 }

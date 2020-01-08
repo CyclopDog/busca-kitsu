@@ -129,6 +129,10 @@ footer {
   box-sizing: border-box;
 }
 
+.char-desc > p:first-child:hover {
+  cursor: pointer;
+}
+
 table, tbody {
   display: block;
   width: 100%;
@@ -167,8 +171,11 @@ tbody > tr:first-child:hover {
 
 table > tbody > tr >  th, table > tbody > tr >  td {
   padding: 15px;
-  text-align: justify;
   margin: auto 0;
+}
+
+table > tbody > tr >  th, table > tbody > tr >  td, p {
+  text-align: justify;
 }
 
 table > tbody > tr >  td > div {
@@ -216,5 +223,9 @@ table > tbody > tr >  td > div > div {
 
   .header-right, table > tbody > tr > th:last-child, table > tbody > tr > td:last-child {
     display: none;
+  }
+
+  .char-desc {
+    padding: 10px;
   }
 }
