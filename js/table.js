@@ -1,4 +1,4 @@
-import { offset, main } from "./globals.js"
+import { main } from "./globals.js"
 import Description from "./description.js"
 import { nav } from "./navbar.js"
 
@@ -27,7 +27,7 @@ export const displayAllData = () => {
   main.appendChild(loading)
 
 
-  fetch(`https://kitsu.io/api/edge/characters?page[limit]=10&page[offset]=${offset}`)
+  fetch(`https://kitsu.io/api/edge/characters?page[limit]=10&page[offset]=${history.state.offset}`)
     .then(data => data.json())
     .then(response => {
       main.removeChild(loading)

@@ -1,5 +1,5 @@
 import { displayAllData } from "./table.js"
-import { offset, setOffset, totalOffset } from "./globals.js"
+import { totalOffset } from "./globals.js"
 
 const isMob = matchMedia("(max-width: 768px)")
 const arrowLeft = document.createElement("div")
@@ -12,11 +12,11 @@ const pageButtons = () => {
   }
   nav.appendChild(arrowLeft)
   const currentPage = document.createElement("div")
-  const page = offset / 10 + 1
+  const page = history.state.offset / 10 + 1
   currentPage.classList.add("page", "active")
   currentPage.innerHTML = page
   if (isMob.matches) {
-    if (offset === 0) {
+    if (history.state.offset === 0) {
       nav.appendChild(currentPage)
       for (let i = page + 1; i <= page + 2; i++) {
         const nextPage = document.createElement("div")
@@ -24,7 +24,7 @@ const pageButtons = () => {
         nextPage.classList.add("page")
         nav.appendChild(nextPage)
       }
-    } else if (offset === totalOffset) {
+    } else if (history.state.offset === totalOffset) {
       for (let i = page - 1; i >= page - 2; i--) {
         const prevPage = document.createElement("div")
         prevPage.classList.add("page")
@@ -44,7 +44,7 @@ const pageButtons = () => {
       nav.appendChild(nextPage)
     }
   } else {
-    switch (offset) {
+    switch (history.state.offset) {
       case 0:
         nav.appendChild(currentPage)
         for (let i = page + 1; i <= page + 4; i++) {
@@ -104,7 +104,7 @@ const pageButtons = () => {
       ele.classList.remove("active")
     }
     ele.addEventListener("click", () => {
-      setOffset((parseInt(ele.innerHTML) - 1) * 10)
+      history.pushState({offset: (parseInt(ele.innerHTML) - 1) * 10}, '')
       navArrowsCheck()
       displayAllData()
       pageButtons()
@@ -115,9 +115,8 @@ const pageButtons = () => {
 
 export const setNavListeners = () => {
   arrowLeft.addEventListener("click", () => {
-    if (offset > 0) {
-      let newOffset = offset - 10
-      setOffset(newOffset)
+    if (history.state.offset > 0) {
+      history.pushState({offset: history.state.offset - 10}, '')
       displayAllData()
       navArrowsCheck()
       pageButtons()
@@ -125,9 +124,8 @@ export const setNavListeners = () => {
   })
   
   arrowRight.addEventListener("click", () => {
-    if (offset < totalOffset) {
-      let newOffset = offset + 10
-      setOffset(newOffset)
+    if (history.state.offset < totalOffset) {
+      history.pushState({offset: history.state.offset + 10}, '')
       displayAllData()
       navArrowsCheck()
       pageButtons()
@@ -138,13 +136,13 @@ export const setNavListeners = () => {
 isMob.addListener(pageButtons)
 
 const navArrowsCheck = () => {
-  if (offset === 0) {
+  if (history.state.offset === 0) {
     arrowLeft.classList.add("inactive")
   } else {
     arrowLeft.classList.remove("inactive")
   }
 
-  if (offset === totalOffset) {
+  if (history.state.offset === totalOffset) {
     arrowRight.classList.add("inactive")
   } else {
     arrowRight.classList.remove("inactive")
